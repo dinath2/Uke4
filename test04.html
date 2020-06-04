@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>This is a test to see if this works!</div>
+    <input type="text"><br>
+    <div id="result" onchange="show()"></div>
+
+    <script>
+        function show() {
+            document.getElementById(result).innerHTML = fixText(text);
+        }
+
+        function fixText(text) {
+        return text
+        if (text = 'text') {
+            'Text'
+        }
+        if (text = (' text' || 'text ' || ' text ')){
+            'text'
+        }
+    }
+    </script>
+</body>
+</html>
