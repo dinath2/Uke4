@@ -1,82 +1,152 @@
 <!DOCTYPE html>
-
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-        <meta charset="utf-8">
-        <title>Picture Puzzle</title>
+    <!--
+        DONE
+        + load image
+        + split image into 4 canvases
+        + select the canvas that is clicked on
+
+        TO-DO
+        + put selected caqnvas in selected destination
+        + reset, win condition, etc.
+        + make preview invisible
+        + prettier
+
+
+    -->
+    <meta charset="utf-8">
+    <title>Picture Puzzle</title>
     <style>
-        img {
-            width:200px;
+        body {
+            user-select: none;
+        }
+        #image {
             border: 3px rgb(145, 202, 235);
             border-width: 4px;
             border-radius: 6px;
             border-style: solid;
-            
         }
         #puzzleArea {
             border: 5px dotted #aaaaaa;
-            border-radius: 2px;
+        }
+        #puzzlePieces {
+            border: 5px dashed #4408d1;
             width: 1000px;
-        
-        }
-        .puzzle{
-
-        }
-        .piece1{
-
-        }
-        .piece2{
-
-        }
-        .piece3{
-
-        }
-        .piece4{
-
         }
     </style>
 </head>
     
 <body>
     <input type="file" id="input" name="input" onchange="loadFile(event)" accept="image/*"/>
-    <img src="" id="image" onload="ready()"></img>
+    <br></br>
+    <img src="" id="image" onload="preparePieces()"/>
     <div class="puzzle piece1"></div>
     <div class="puzzle piece2"></div>
     <div class="puzzle piece3"></div>
     <div class="puzzle piece4"></div>
 
-    <canvas id="puzzleArea">
+        <canvas onclick="selectPiece(this)" class="pieces" id=firstPiece></canvas>
+        <canvas onclick="selectPiece(this)" class="pieces" id=secondPiece></canvas>
+        <canvas onclick="selectPiece(this)" class="pieces" id=thirdPiece></canvas>
+        <canvas onclick="selectPiece(this)" class="pieces" id=fourthPiece></canvas>
+        <br></br>
+        <canvas onclick="placePiece(this)" id="puzzleArea">
         
     </canvas>
-
     
     <script>
         //model
         function $(id) {
             return document.getElementById(id);
         }
-
-        var piece1;
-        var piece2;
-        var piece3;
-        var piece4;
-
         
+        var image = $("image");
+        var piece1 = $("firstPiece");
+        var piece2 = $("secondPiece");
+        var piece3 = $("thirdPiece");
+        var piece4 = $("fourthPiece");
+        allPieces = [piece1, piece2, piece3, piece4]
+
+        selected = null;
 
         //view
         var loadFile = function(event) {
             $("image").src = URL.createObjectURL(event.target.files[0]);
         };
 
-        function ready() {
-            var canvas = $("puzzleArea");
+        function preparePieces() {
+            pieceCount = 0;
+            allPieces.forEach(canvas => {
+                pieceCount++;
+                context = canvas.getContext("2d");
+                canvas.width = image.width/2;
+                canvas.height = image.height/2;
+                if (pieceCount == 1) {
+                    context.drawImage(image, 0, 0, image.width/2, image.height/2, 0, 0, image.width/2, image.height/2);
+                }
+                else if (pieceCount == 2) {
+                    context.drawImage(image, image.width/2, 0, image.width/2, image.height/2, 0, 0, image.width/2, image.height/2);
+                }
+                else if (pieceCount == 3) {
+                    context.drawImage(image, 0, image.width/2, image.width/2, image.height/2, 0, 0, image.width/2, image.height/2);
+                }
+                else if (pieceCount == 4) {
+                    context.drawImage(image, image.width/2, image.width/2, image.width/2, image.height/2, 0, 0, image.width/2, image.height/2);
+                }
+            });
+        }
+    
+        function selectPiece(piece) {
+            selected = piece.id;
+            if (selected == piece1.id) {
+                console.log("FAR LEFT HAS BEEN SELECTED YES VERY NICE");
+                cutX = cutY = 0;
+                posX = posY = 0;
+            }
+            if (selected == piece2.id) {
+                console.log("SECOND PIECE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                cutX = image.width/2;
+                cutY = 0;
+                posX = null;
+                posY = null;
+            }
+            if (selected == piece3.id) {
+                console.log("NUMBER THREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+                cutX = image.width/2;
+                cutY = image.height/2;
+                posX = image.width/2;
+                posY = 0;
+            }
+            if (selected == piece4.id) {
+                console.log("the last one.");
+            }
+        }
+
+        function placePiece(canvas) {
             var image = $("image");
             var context = canvas.getContext("2d");
-            context.drawImage(image, 0, 0, 50, 60, 10, 10, 50, 60);
-}
+            canvas.width = image.width;
+            canvas.height = image.height;
+            context.drawImage(image, cutX, cutY, image.width/2, image.height/2, posX, posY, image.width/2, image.height/2);
+        }
+            // USE THESE FOR PLACING PIECE IN BIG CANVAS  !!!
+            if ("click on top left") {
+                cutX = cutY = 0;
+                posX = posY = 0;
+            } else if ("click on top right") {
+                cutX = image.width/2;
+                cutY = 0;
+            } else if ("dkaushedj") {
+                cutX = 0;
+                cutY = image.height/2;
+            } else if ("esfjklf") {
+                cutX = image.width/2;
+                cutY = image.height/2;
+            }
+
+
         // (img,sx,sy,swidth,sheight,x,y,width,height);
-
-
 
         //controller
 
